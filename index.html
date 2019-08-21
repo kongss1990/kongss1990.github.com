@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>iview example</title>
+    <link rel="stylesheet" type="text/css" href="js/iview.css">
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/iview.min.js"></script>
+
+
+    <script src='js/three.min.js'></script>
+    <script src='js/OrbitControls.js'></script>
+    <script src='js/Detector.js'></script>
+    <script src='js/stats.min.js'></script>
+    <script src="js/DragControls.js"></script>
+    <script src="js/util.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+<div id="app">
+
+
+    <Modal v-model="visible"
+           title="第一关"
+           mask-closable="false"
+           @on-ok="ok"
+           @on-cancel="cancel">
+        请选择开始方式:
+        <Radio-group v-model="startType">
+            <Radio label="奇数层码放"></Radio>
+            <Radio label="偶数层码放"></Radio>
+        </Radio-group>
+    </Modal>
+
+
+    <div style="position: absolute;margin: 10px" id="inforCon" v-show="showInfor">
+        <Card style="width:300px;font-size: 15px" v-if="showInfor">
+            <p slot="title">
+                基础信息
+            </p>
+            <a href="#" slot="extra" @click="showInfor=false">
+                <Icon type="ios-close" size="25"/>
+                Change
+            </a>
+            <div style="padding: 0 5px">
+                <div style="margin-bottom: 10px">货品名称:<span style="margin-left: 10px">----</span></div>
+                <div style="margin-bottom: 10px">纸箱尺寸:<span style="margin-left: 10px">330*245*240</span></div>
+                <div style="margin-bottom: 10px">纸箱个数:<span style="margin-left: 10px">14个</span></div>
+                <div style="margin-bottom: 10px">托盘尺寸:<span style="margin-left: 10px">1200*1000mm</span></div>
+                <div style="margin-bottom: 20px">剩余时间:<span style="margin-left: 10px">{{countTime}}</span></div>
+                <Divider>图纸</Divider>
+
+                <Radio-group v-model="startType" type="button" style="margin-left: 15px;margin-bottom: 10px">
+                    <Radio label="奇数层码放"></Radio>
+                    <Radio label="偶数层码放"></Radio>
+                </Radio-group>
+                <img style="width: 100%" v-if="startType=='奇数层码放'"src="assets/1-1.png">
+                <img style="width: 100%" v-if="startType=='偶数层码放'"src="assets/1-2.png">
+            </div>
+        </Card>
+    </div>
+
+    <div style="position: absolute;right: 10px;top: 10px;font-size: 30px">
+        <Button-group vertical>
+            <i-button icon="ios-add-circle-outline" style="font-size: 15px" @click="addBox">添加箱子</i-button>
+            <i-button icon="ios-move" style="font-size: 15px">移动箱子</i-button>
+            <i-button icon="ios-sync" style="font-size: 15px" @click="rotate">旋转箱子</i-button>
+            <i-button icon="ios-trash-outline" style="font-size: 15px" @click="deleteBox">删除箱子</i-button>
+            <i-button icon="ios-hammer-outline" style="font-size: 15px" @click="deleteBoxByLayer">删除该层</i-button>
+            <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="showInfor=true">查看详情</i-button>
+            <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="addLayer" v-if="showAddLayerBtn">添加整层</i-button>
+            <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="nextScene" v-if="showAddLayerBtn">进入下关</i-button>
+
+
+        </Button-group>
+    </div>
+
+
+    <div id="viewport"></div>
+
+</div>
+<script>
+    var vm=new Vue({
+        el: '#app',
+        data: {
+            visible:true,
+            startType:'奇数层码放',
+            countTime:'',
+            newTime:'',
+            showInfor:false,
+            showAddLayerBtn:false
+        },
+        mounted:function(){
+            this.newTime = (new Date()).getTime()+15*60*1000;
+            this.getDate();
+            setInterval(this.getDate, 1000);
+        },
+        methods: {
+            nextScene:function(){
+                this.$Message.info('数据维护中。。。');
+            },
+            addLayer:function(){
+                addLayer();
+            },
+            addBox:function(){
+                addBox();
+            },
+            deleteBox:function(){
+                if(selectionBoxEdage){
+                    deleteBox();
+                }else {
+                    this.$Message.info('请先选择要删除箱子');
+                }
+            },
+            rotate:function(){
+                if(selectionBoxEdage){
+                    rotate90();
+                }else {
+                    this.$Message.info('请先选择要旋转箱子');
+                }
+
+            },
+            deleteBoxByLayer:function(){
+                if(selectionBoxEdage){
+                    deleteBoxByLayer();
+                }else {
+                    this.$Message.info('请先选择要删除层任意一个箱子');
+                }
+            },
+            show: function () {
+                this.visible = true;
+            },
+            ok:function (){
+                this.newTime = (new Date()).getTime()+15*60*1000;
+                this.getDate();
+                setInterval(this.getDate, 1000);
+
+                this.showInfor = true;
+                if(this.startType=='奇数层码放'){
+                    loadMap(12);
+                    loadMap2(36);
+                }else{
+                    loadMap2(12);
+                    loadMap(36);
+                }
+                for(var i=0;i<mapMeshs[i].length;i++){
+                    mapMeshs[i].visible = false;
+                    mapMeshs[i].material = new THREE.MeshBasicMaterial({opacity: 0, transparent: true}) ;
+
+                }
+                addBox();
+                render()
+            },
+            cancel:function (){
+
+            },
+            tow:function(n) {
+                return n >= 0 && n < 10 ? '0' + n : '' + n;
+            },
+            getDate:function(){
+                var oDate = new Date();//获取日期对象
+                var oldTime = oDate.getTime();//现在距离1970年的毫秒数
+                var second = Math.floor((this.newTime - oldTime) / 1000);//未来时间距离现在的秒数
+                var day = Math.floor(second / 86400);//整数部分代表的是天；一天有24*60*60=86400秒 ；
+                second = second % 86400;//余数代表剩下的秒数；
+                var hour = Math.floor(second / 3600);//整数部分代表小时；
+                second %= 3600; //余数代表 剩下的秒数；
+                var minute = Math.floor(second / 60);
+                second %= 60;
+                this.countTime = this.tow(minute)+'分钟'+this.tow(second) + '秒';
+
+            }
+        }
+    });
+
+    var oBox = document.getElementById("inforCon");
+    var oBar = document.getElementById("inforCon");
+    startDrag(oBar, oBox);
+</script>
+
+</body>
+<script src="js/init3d.js"></script>
+<script src="js/map/level_1.js"></script>
+<script src="js/map/level_2.js"></script>
+</html>
