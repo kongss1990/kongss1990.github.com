@@ -70,7 +70,7 @@
             <i-button icon="ios-sync" style="font-size: 15px" @click="rotate">旋转箱子</i-button>
             <i-button icon="ios-trash-outline" style="font-size: 15px" @click="deleteBox">删除箱子</i-button>
             <i-button icon="ios-hammer-outline" style="font-size: 15px" @click="deleteBoxByLayer">删除该层</i-button>
-            <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="showInfor=true">查看详情</i-button>
+            <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="showInfor=!showInfor">查看详情</i-button>
             <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="addLayer" v-if="showAddLayerBtn">添加整层</i-button>
             <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="nextScene" v-if="showAddLayerBtn">进入下关</i-button>
 
