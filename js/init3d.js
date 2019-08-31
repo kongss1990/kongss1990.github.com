@@ -269,7 +269,7 @@ function init() {
 
 
 
-    // orbit.enabled = false;
+    orbit.enabled = false;
     orbit.addEventListener('start', function () {
 
     });
@@ -295,7 +295,7 @@ function init() {
 
     });
     dragcontrols.addEventListener('dragend', function (event) {
-        orbit.enabled = true;
+        // orbit.enabled = true;
         render();
 
         if(success){
