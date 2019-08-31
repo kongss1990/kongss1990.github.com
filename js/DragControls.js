@@ -66,18 +66,84 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 		_mouse.y = - ( ( event.clientY - rect.top ) / rect.height ) * 2 + 1;
 
 		_raycaster.setFromCamera( _mouse, _camera );
-
-		if ( _selected && scope.enabled ) {
+        var isOk = true;
+        var isX = true;
+        var isZ = true;
+        if ( _selected && scope.enabled ) {
 
 			if ( _raycaster.ray.intersectPlane( _plane, _intersection ) ) {
 
-				_selected.position.copy( _intersection.sub( _offset ) );
-                var v = _intersection.sub( _offset );
+
+                // var v = _intersection.sub( _offset );
                 //----------------------
                 // console.log(v.x,v.z);
+                //****************检测是否碰撞******************
+                var tempObj = _selected.clone();
+                var pos = _intersection.clone();
+                tempObj.position.copy( pos.sub( _offset ) );
+
+                // console.log(_intersection);
+
+                //两个分量
+                var tempObjX = _selected.clone();
+                var tempObjZ = _selected.clone();
+
+
+                tempObjX.position.x=_intersection.clone().sub(_offset).x;
+                tempObjZ.position.z=_intersection.clone().sub(_offset).z;
+                var boxX =  new THREE.Box3().setFromObject(tempObjX);
+                var boxZ =  new THREE.Box3().setFromObject(tempObjZ);
+
+                var box1 =  new THREE.Box3().setFromObject(tempObj);
+                for(var i=0;i<_objects.length;i++){
+                    if(_objects[i]!=_selected){
+                        var box2 = new THREE.Box3();
+                        box2.setFromObject(_objects[i]);
+                        if(box1.intersectsBox(box2)){
+                            isOk = false;
+
+                        	if(boxX.intersectsBox(box2)){
+                        		isX=false;
+							}
+                            if(boxZ.intersectsBox(box2)){
+                                isZ=false;
+                            }
+                        }
+                    }
+
+                }
+
+                // var box1 =  new THREE.Box3().setFromObject(tempObj);
+                // for(var i=0;i<_objects.length;i++){
+					// if(_objects[i]!=_selected){
+                //         var box2 = new THREE.Box3();
+                //         box2.setFromObject(_objects[i]);
+                //         if(box1.intersectsBox(box2)){
+                //             console.log('hit');
+                //             isOk = false;
+                //         }
+					// }
+                //
+                // }
+
+
+                if(isOk){
+                    _selected.position.copy( _intersection.sub( _offset ) );
+                }else{
+                    if(isX){
+                        _selected.position.x=_intersection.sub( new THREE.Vector3(_offset.x,0,0) ).x;
+                    }
+                    if(isZ){
+                        _selected.position.z=_intersection.sub( new THREE.Vector3(0,0,_offset.z) ).z;
+                    }
+				}
+
+
 			}
 
-			scope.dispatchEvent( { type: 'drag', object: _selected } );
+			if(isOk || isX ||isZ){
+                scope.dispatchEvent( { type: 'drag', object: _selected } );
+            }
 
 			return;
 
