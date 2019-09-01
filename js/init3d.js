@@ -4,12 +4,12 @@ var container, scene, camera, renderer, stats;
 var dragObjects = [];
 var selectionBoxEdage = null;
 
-var layer=0;
+var layer = 0;
 
-var boxL1=[];
-var boxL2=[];
-var boxL3=[];
-var boxL4=[];
+var boxL1 = [];
+var boxL2 = [];
+var boxL3 = [];
+var boxL4 = [];
 
 function render() {
 
@@ -23,12 +23,13 @@ function render() {
 
     hitTest();
 }
-function setEdg(obj){
+
+function setEdg(obj) {
     if (selectionBoxEdage) {
         scene.remove(selectionBoxEdage);
         selectionBoxEdage = null;
     }
-    selectionBoxEdage = new THREE.EdgesHelper(obj, 0xffff00,1);
+    selectionBoxEdage = new THREE.EdgesHelper(obj, 0xffff00, 1);
     selectionBoxEdage.material.depthTest = true;
     selectionBoxEdage.material.transparent = true;
     selectionBoxEdage.position.x = obj.position.x;
@@ -39,81 +40,83 @@ function setEdg(obj){
     selectionBoxEdage.userData["target"] = obj;
     scene.add(selectionBoxEdage);
 }
-function updateEdg(){
-    if(selectionBoxEdage){
+
+function updateEdg() {
+    if (selectionBoxEdage) {
         selectionBoxEdage.position.x = selectionBoxEdage.userData["target"].position.x;
         selectionBoxEdage.position.y = selectionBoxEdage.userData["target"].position.y;
         selectionBoxEdage.position.z = selectionBoxEdage.userData["target"].position.z;
     }
 }
-function hitTest(){
-    if(mapMeshs){
 
-        var okNum=0;
-        for(var ii=0;ii<dragObjects.length;ii++){
+function hitTest() {
+    if (mapMeshs) {
 
-                var box11 = new THREE.Box3();
-                box11.setFromObject(dragObjects[ii]);
-                var isOk2 = false;
-                for(var jj=0;jj<mapMeshs.length;jj++){
-                    var box22 = new THREE.Box3();
-                    box22.setFromObject(mapMeshs[jj]);
-                    if(box11.containsBox(box22)){
-                        isOk2 = true;
-                    }
+        var okNum = 0;
+        for (var ii = 0; ii < dragObjects.length; ii++) {
+
+            var box11 = new THREE.Box3();
+            box11.setFromObject(dragObjects[ii]);
+            var isOk2 = false;
+            for (var jj = 0; jj < mapMeshs.length; jj++) {
+                var box22 = new THREE.Box3();
+                box22.setFromObject(mapMeshs[jj]);
+                if (box11.containsBox(box22)) {
+                    isOk2 = true;
                 }
-                if(isOk2){
-                    // dragObjects[ii].material = new THREE.MeshLambertMaterial({map: texture});
-                    dragObjects[ii].material =facematerial
-                }else{
-                    dragObjects[ii].material =facematerial
-                    // dragObjects[ii].material = new THREE.MeshLambertMaterial({map: texture,transparent:true,opacity:0.6});
-                }
+            }
+            if (isOk2) {
+                // dragObjects[ii].material = new THREE.MeshLambertMaterial({map: texture});
+                dragObjects[ii].material = facematerial
+            } else {
+                dragObjects[ii].material = facematerial
+                // dragObjects[ii].material = new THREE.MeshLambertMaterial({map: texture,transparent:true,opacity:0.6});
+            }
 
 
         }
 
-        for(var i=0;i<mapMeshs.length;i++){
-            if(dragObjects.length){
+        for (var i = 0; i < mapMeshs.length; i++) {
+            if (dragObjects.length) {
                 var box1 = new THREE.Box3();
                 box1.setFromObject(mapMeshs[i]);
                 var isOk = false;
-                for(var j=0;j<dragObjects.length;j++){
+                for (var j = 0; j < dragObjects.length; j++) {
                     var box2 = new THREE.Box3();
                     box2.setFromObject(dragObjects[j]);
-                    if(box1.containsBox(box2)){
+                    if (box1.containsBox(box2)) {
                         isOk = true;
 
                         // dragObjects[j].material=new THREE.MeshLambertMaterial({map: texture});
-                        dragObjects[j].material =facematerial2
+                        dragObjects[j].material = facematerial2
                         // vm.tipMessage = '提示：正确位置！';
-                        if(dragObjects[j].position.y<dragObjects[j].geometry.parameters.depth){
-                            if(boxL1.indexOf(dragObjects[j])==-1)boxL1.push(dragObjects[j]);
-                        }else{
-                            if(boxL2.indexOf(dragObjects[j])==-1)boxL2.push(dragObjects[j]);
-                        }
+                        // if(dragObjects[j].position.y<dragObjects[j].geometry.parameters.depth){
+                        //     if(boxL1.indexOf(dragObjects[j])==-1)boxL1.push(dragObjects[j]);
+                        // }else{
+                        //     if(boxL2.indexOf(dragObjects[j])==-1)boxL2.push(dragObjects[j]);
+                        // }
                     }
                 }
-                if(isOk){
+                if (isOk) {
                     okNum++;
                     // mapMeshs[i].visible = true;
                     // mapMeshs[i].material = new THREE.MeshBasicMaterial({color:0xff0000,wireframe:true}) ;
 
-                }else{
+                } else {
                     mapMeshs[i].visible = false;
-                    mapMeshs[i].material = new THREE.MeshBasicMaterial({opacity: 0, transparent: true}) ;
+                    mapMeshs[i].material = new THREE.MeshBasicMaterial({opacity: 0, transparent: true});
                 }
 
 
             }
-            if(dragObjects.length==levelData[vm.level].num&&!success){
-                if(okNum==levelData[vm.level].num){
+            if (dragObjects.length == levelData[vm.level].num && !success) {
+                if (okNum == levelData[vm.level].num) {
                     layer++;
 
-                    vm.tipMessage = '提示：第'+layer+'层码放完毕进入第'+(layer+1)+'层';
+                    vm.tipMessage = '提示：第' + layer + '层码放完毕进入第' + (layer + 1) + '层';
                     success = true;
 
-                }else{
+                } else {
                     vm.tipMessage = '提示：托盘利用率低！'
                 }
             }
@@ -132,34 +135,37 @@ function hitTest(){
     }
 
 }
-function hitTestKey(type,value){
+
+function hitTestKey(type, value) {
 
     var tempObj = selectionBoxEdage.userData["target"].clone();
-    if(type=='z'){
+    if (type == 'z') {
         tempObj.position.z += value;
-    }else{
+    } else {
         tempObj.position.x += value;
     }
     var isOk = true;
-    var box1 =  new THREE.Box3().setFromObject(tempObj);
-    for(var i=0;i<dragObjects.length;i++){
-    if(dragObjects[i]!=selectionBoxEdage.userData["target"]){
+    var box1 = new THREE.Box3().setFromObject(tempObj);
+    for (var i = 0; i < dragObjects.length; i++) {
+        if (dragObjects[i] != selectionBoxEdage.userData["target"]) {
             var box2 = new THREE.Box3();
             box2.setFromObject(dragObjects[i]);
-            if(box1.intersectsBox(box2)){
+            if (box1.intersectsBox(box2)) {
                 isOk = false;
             }
-    }
+        }
 
     }
 
-    if(isOk){
+    if (isOk) {
         return true
-    }else{
+    } else {
         return false
     }
 }
+
 var success = false;
+
 function onWindowResize() {
 
     camera.aspect = container.offsetWidth / container.offsetHeight;
@@ -186,7 +192,6 @@ function init() {
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf0f0f0);
-
 
 
     //为width/height,通常设置为canvas元素的高宽比。
@@ -242,11 +247,11 @@ function init() {
 
     var textureLoaderplane = new THREE.TextureLoader();
     textureLoaderplane.load("assets/plane.jpg", function (map) {
-           map.wrapS = THREE.RepeatWrapping;
-           map.wrapT = THREE.RepeatWrapping;
+        map.wrapS = THREE.RepeatWrapping;
+        map.wrapT = THREE.RepeatWrapping;
 //            map.anisotropy = 4;
         planeMaterial1.map = map;
-           map.repeat.set( 10, 10 );
+        map.repeat.set(10, 10);
         planeMaterial1.needsUpdate = true;
     });
     plane1 = new THREE.Mesh(planeGeometry1, planeMaterial1);
@@ -266,7 +271,6 @@ function init() {
     var axes = new THREE.AxesHelper(120);
     axes.position.set(0, 0, 0);
     // scene.add(axes);
-
 
 
     orbit.enabled = false;
@@ -295,17 +299,18 @@ function init() {
 
     });
     dragcontrols.addEventListener('dragend', function (event) {
-        // orbit.enabled = true;
+        orbit.enabled = true;
         render();
 
-        if(success){
-            vm.tipMessage = '提示：第'+layer+'层码放完毕进入第'+(layer+1)+'层';
-            while (dragObjects.length){
+        if (success) {
+            vm.tipMessage = '提示：第' + layer + '层码放完毕进入第' + (layer + 1) + '层';
+            while (dragObjects.length) {
                 dragObjects.pop();
             }
+            addBox();
             success = false;
 
-            if(layer==2){
+            if (layer == 2) {
                 vm.showAddLayerBtn = true;
                 vm.$Message.success('恭喜你，过关了！');
             }
@@ -314,30 +319,30 @@ function init() {
     });
     dragcontrols.addEventListener('drag', function (event) {
 
-        var r = (event.object.rotation.y/(Math.PI*.5)*90)%360;
-        if(r==0||r==180){
+        var r = (event.object.rotation.y / (Math.PI * .5) * 90) % 360;
+        if (r == 0 || r == 180) {
 
-            var t1 = Math.abs(event.object.position.x)>60-event.object.geometry.parameters.width*.5+2;
-            var t2 = Math.abs(event.object.position.z)>50-event.object.geometry.parameters.height*.5+2;
-            if(t2||t1){
+            var t1 = Math.abs(event.object.position.x) > 60 - event.object.geometry.parameters.width * .5 + 2;
+            var t2 = Math.abs(event.object.position.z) > 50 - event.object.geometry.parameters.height * .5 + 2;
+            if (t2 || t1) {
                 // console.error('超出')
                 // vm.$Message.destroy();
                 // vm.$Message.error('超出20mm');
                 vm.tipMessage = '提示：超出20mm'
-            }else{
+            } else {
                 // vm.$Message.destroy();
                 vm.tipMessage = ''
             }
 
-        }else{
-            var t3 = Math.abs(event.object.position.x)>60-event.object.geometry.parameters.height*.5+2;
-            var t4 = Math.abs(event.object.position.z)>50-event.object.geometry.parameters.width*.5+2;
-            if(t3||t4){
+        } else {
+            var t3 = Math.abs(event.object.position.x) > 60 - event.object.geometry.parameters.height * .5 + 2;
+            var t4 = Math.abs(event.object.position.z) > 50 - event.object.geometry.parameters.width * .5 + 2;
+            if (t3 || t4) {
                 // console.error('超出')
-               //  vm.$Message.destroy();
-               // vm.$Message.error('超出20mm');
+                //  vm.$Message.destroy();
+                // vm.$Message.error('超出20mm');
                 vm.tipMessage = '提示：超出20mm'
-            }else{
+            } else {
                 // vm.$Message.destroy();
                 vm.tipMessage = ''
             }
@@ -351,23 +356,22 @@ function init() {
     });
 
 
-
     window.addEventListener('keydown', function (event) {
 
-        if(selectionBoxEdage){
+        if (selectionBoxEdage) {
             var step = 0.5;
             switch (event.keyCode) {
                 case 87: // W
-                    if(hitTestKey('z',-step))selectionBoxEdage.userData["target"].position.z -= step;
+                    if (hitTestKey('z', -step)) selectionBoxEdage.userData["target"].position.z -= step;
                     break;
                 case 65: // A
-                    if(hitTestKey('x',-step))selectionBoxEdage.userData["target"].position.x -= step;
+                    if (hitTestKey('x', -step)) selectionBoxEdage.userData["target"].position.x -= step;
                     break;
                 case 83: // S
-                    if(hitTestKey('z',step))selectionBoxEdage.userData["target"].position.z += step;
+                    if (hitTestKey('z', step)) selectionBoxEdage.userData["target"].position.z += step;
                     break;
                 case 68: // D
-                    if(hitTestKey('x',step))selectionBoxEdage.userData["target"].position.x += step;
+                    if (hitTestKey('x', step)) selectionBoxEdage.userData["target"].position.x += step;
                     break;
                 case 82: //R
                 case 69: //E
@@ -399,8 +403,6 @@ function init() {
         }
 
     });
-
-
 
 
     var tuopanMat = new THREE.MeshBasicMaterial({
@@ -442,78 +444,78 @@ function init() {
     }
     //底座标尺
     var lineSize = .3;
-    var mRular = new THREE.MeshBasicMaterial({color:0x000000});
+    var mRular = new THREE.MeshBasicMaterial({color: 0x000000});
     var gRularW = new THREE.BoxGeometry(110, lineSize, lineSize);
     var mRularW = new THREE.Mesh(gRularW, mRular);
     mRularW.position.z = 55;
     scene.add(mRularW);
 
-    var w1 = new THREE.Mesh(new THREE.BoxGeometry(lineSize, lineSize,5), mRular);
+    var w1 = new THREE.Mesh(new THREE.BoxGeometry(lineSize, lineSize, 5), mRular);
     w1.position.z = 55;
     w1.position.x = -60;
     scene.add(w1);
-    var w2 = new THREE.Mesh(new THREE.BoxGeometry(lineSize, lineSize,5), mRular);
+    var w2 = new THREE.Mesh(new THREE.BoxGeometry(lineSize, lineSize, 5), mRular);
     w2.position.z = 55;
     w2.position.x = 60;
     scene.add(w2);
 
-    var wCone1 = new THREE.ConeGeometry( 2, 5, 5 );
-    var wConeMesh1 = new THREE.Mesh( wCone1, mRular );
+    var wCone1 = new THREE.ConeGeometry(2, 5, 5);
+    var wConeMesh1 = new THREE.Mesh(wCone1, mRular);
     wConeMesh1.position.z = 55;
     wConeMesh1.position.x = -57;
-    wConeMesh1.rotation.z = Math.PI*.5;
-    scene.add( wConeMesh1 );
+    wConeMesh1.rotation.z = Math.PI * .5;
+    scene.add(wConeMesh1);
 
-    var wCone2 = new THREE.ConeGeometry( 2, 5, 5 );
-    var wConeMesh2 = new THREE.Mesh( wCone2, mRular );
+    var wCone2 = new THREE.ConeGeometry(2, 5, 5);
+    var wConeMesh2 = new THREE.Mesh(wCone2, mRular);
     wConeMesh2.position.z = 55;
     wConeMesh2.position.x = 57;
-    wConeMesh2.rotation.z = -Math.PI*.5;
-    scene.add( wConeMesh2 );
+    wConeMesh2.rotation.z = -Math.PI * .5;
+    scene.add(wConeMesh2);
 
-    var gRularH = new THREE.BoxGeometry(lineSize, lineSize,90);
+    var gRularH = new THREE.BoxGeometry(lineSize, lineSize, 90);
     var mRularH = new THREE.Mesh(gRularH, mRular);
-    mRularH.position.x =65;
+    mRularH.position.x = 65;
     scene.add(mRularH);
 
-    var h1 = new THREE.Mesh(new THREE.BoxGeometry(5,lineSize, lineSize), mRular);
+    var h1 = new THREE.Mesh(new THREE.BoxGeometry(5, lineSize, lineSize), mRular);
     h1.position.z = 50;
     h1.position.x = 65;
     scene.add(h1);
-    var h2 = new THREE.Mesh(new THREE.BoxGeometry(5,lineSize, lineSize), mRular);
+    var h2 = new THREE.Mesh(new THREE.BoxGeometry(5, lineSize, lineSize), mRular);
     h2.position.z = -50;
     h2.position.x = 65;
     scene.add(h2);
 
-    var hCone1 = new THREE.ConeGeometry( 2, 5, 5 );
-    var hConeMesh1 = new THREE.Mesh( hCone1, mRular );
+    var hCone1 = new THREE.ConeGeometry(2, 5, 5);
+    var hConeMesh1 = new THREE.Mesh(hCone1, mRular);
     hConeMesh1.position.z = -47;
     hConeMesh1.position.x = 65;
-    hConeMesh1.rotation.x = -Math.PI*.5;
-    scene.add( hConeMesh1 );
+    hConeMesh1.rotation.x = -Math.PI * .5;
+    scene.add(hConeMesh1);
 
-    var hCone2 = new THREE.ConeGeometry( 2, 5, 5 );
-    var hConeMesh2 = new THREE.Mesh( hCone2, mRular );
+    var hCone2 = new THREE.ConeGeometry(2, 5, 5);
+    var hConeMesh2 = new THREE.Mesh(hCone2, mRular);
     hConeMesh2.position.z = 47;
     hConeMesh2.position.x = 65;
-    hConeMesh2.rotation.x = Math.PI*.5;
-    scene.add( hConeMesh2 );
+    hConeMesh2.rotation.x = Math.PI * .5;
+    scene.add(hConeMesh2);
 
-    var gRularGG = new THREE.BoxGeometry(lineSize, 16,lineSize);
+    var gRularGG = new THREE.BoxGeometry(lineSize, 16, lineSize);
     var mRularGG = new THREE.Mesh(gRularGG, mRular);
-    mRularGG.position.x =65;
-    mRularGG.position.z =-50;
-    mRularGG.position.y =-8;
+    mRularGG.position.x = 65;
+    mRularGG.position.z = -50;
+    mRularGG.position.y = -8;
     scene.add(mRularGG);
 
-    var gRularGG = new THREE.BoxGeometry(lineSize, 16,lineSize);
+    var gRularGG = new THREE.BoxGeometry(lineSize, 16, lineSize);
     var mRularGG = new THREE.Mesh(gRularGG, mRular);
-    mRularGG.position.x =65;
-    mRularGG.position.z =-50;
-    mRularGG.position.y =-8;
+    mRularGG.position.x = 65;
+    mRularGG.position.z = -50;
+    mRularGG.position.y = -8;
     scene.add(mRularGG);
 
-    var h2 = new THREE.Mesh(new THREE.BoxGeometry(5,lineSize, lineSize), mRular);
+    var h2 = new THREE.Mesh(new THREE.BoxGeometry(5, lineSize, lineSize), mRular);
     h2.position.z = -50;
     h2.position.x = 65;
     h2.position.y = -16;
@@ -537,43 +539,43 @@ function init() {
     //底座标尺文本
     var loader = new THREE.FontLoader();
 
-    loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
+    loader.load('fonts/helvetiker_regular.typeface.json', function (font) {
 
-        var gTextH = new THREE.TextGeometry( '1200mm', {
+        var gTextH = new THREE.TextGeometry('1200mm', {
             font: font,
             size: 3,
             height: .1,
             curveSegments: 10,
 
-        } );
+        });
         var mTextW = new THREE.Mesh(gTextH, mRular);
         scene.add(mTextW);
-        mTextW.rotation.x=-Math.PI*.5;
+        mTextW.rotation.x = -Math.PI * .5;
         mTextW.position.x = -5;
         mTextW.position.z = 60;
 
 
-        var gTextH = new THREE.TextGeometry( '1000mm', {
+        var gTextH = new THREE.TextGeometry('1000mm', {
             font: font,
             size: 3,
             height: .1,
             curveSegments: 10,
 
-        } );
+        });
         var mTextH = new THREE.Mesh(gTextH, mRular);
-        mTextH.rotation.x=-Math.PI*.5;
-        mTextH.rotation.z=Math.PI*.5;
+        mTextH.rotation.x = -Math.PI * .5;
+        mTextH.rotation.z = Math.PI * .5;
         mTextH.position.z = 8;
         mTextH.position.x = 70;
         scene.add(mTextH);
 
-        var gTextD = new THREE.TextGeometry( '160mm', {
+        var gTextD = new THREE.TextGeometry('160mm', {
             font: font,
             size: 3,
             height: .1,
             curveSegments: 10,
 
-        } );
+        });
         var mTextD = new THREE.Mesh(gTextD, mRular);
         // mTextD.rotation.x=-Math.PI*.5;
         // mTextD.rotation.z=Math.PI*.5;
@@ -582,7 +584,7 @@ function init() {
         mTextD.position.y = -10;
         mTextD.position.x = 65;
         scene.add(mTextD);
-    } );
+    });
 
     texture = new THREE.TextureLoader().load('assets/crate.gif', render);
     texture.mapping = THREE.UVMapping;
@@ -599,53 +601,77 @@ function init() {
 var texture
 init();
 
-function addLayer(){
+function addLayer() {
     vm.tipMessage = '';
-    if(layer==4 ||dragObjects.length==levelData[vm.level].num){
+    if (layer == 4 || dragObjects.length == levelData[vm.level].num) {
         vm.$Message.error('超出范围');
         return;
     }
     layer++;
     var arr;
-    if(layer%2){
-       arr=boxL1;
-    }else{
-        arr=boxL2;
+    if (layer % 2) {
+        arr = boxL1;
+        while(boxL3.length){
+            scene.remove(boxL3[boxL3.length-1]);
+            boxL3.pop();
+        }
+    } else {
+        arr = boxL2;
+        while(boxL4.length){
+            scene.remove(boxL4[boxL4.length-1]);
+            boxL4.pop();
+        }
     }
-    for(var i=0;i<arr.length;i++){
+    for (var i = 0; i < arr.length; i++) {
         var mesh = arr[i].clone();
-        var h =Number(levelData[vm.level].size.split('×')[2])*.1*.5;
-        mesh.position.y = h+(layer-1)*2*h;
+        var h = Number(levelData[vm.level].size.split('×')[2]) * .1 * .5;
+        mesh.position.y = h + (layer - 1) * 2 * h;
         scene.add(mesh);
-        if(layer%2){
+        if (layer % 2) {
             boxL3.push(mesh);
-        }else{
+        } else {
             boxL4.push(mesh);
         }
     }
     render();
 }
+
 function addBox(e) {
-    if(layer==4 ||dragObjects.length==levelData[vm.level].num){
+    if (layer == 4 || dragObjects.length == levelData[vm.level].num) {
         vm.$Message.error('超出范围');
         return;
     }
+
     var geometry = new THREE.BoxBufferGeometry(33, 24.5, 24);
-    var material = new THREE.MeshLambertMaterial({map: texture,transparent:true,opacity:0.6});
+    var material = new THREE.MeshLambertMaterial({map: texture, transparent: true, opacity: 0.6});
     // var mesh = new THREE.Mesh(geometry, material);
 
     var mesh = new THREE.Mesh(geometry, facematerial);
-    var h =Number(levelData[vm.level].size.split('×')[2])*.1*.5;
-    mesh.position.y = h+layer*2*h;
+    var h = Number(levelData[vm.level].size.split('×')[2]) * .1 * .5;
+    mesh.position.y = h + layer * 2 * h;
 
     mesh.position.x = 80;
     mesh.position.z = -70;
     dragObjects.push(mesh);
     scene.add(mesh);
-    setEdg(mesh)
+    setEdg(mesh);
     render();
     render();
+
+    if (layer == 0) {
+        boxL1.push(mesh);
+    }
+    if (layer == 1) {
+        boxL2.push(mesh);
+    }
+    if (layer == 2) {
+        boxL3.push(mesh);
+    }
+    if (layer == 3) {
+        boxL4.push(mesh);
+    }
 }
+
 function rotate90() {
     if (selectionBoxEdage) {
         selectionBoxEdage.userData["target"].rotation.y = selectionBoxEdage.userData["target"].rotation.y + Math.PI / 2;
@@ -655,12 +681,7 @@ function rotate90() {
     }
     render();
 }
-Array.prototype.remove = function(val) {
-    var index = this.indexOf(val);
-    if (index > -1) {
-        this.splice(index, 1);
-    }
-};
+
 function deleteBox() {
     if (selectionBoxEdage) {
         dragObjects.remove(selectionBoxEdage.userData["target"]);
@@ -673,40 +694,43 @@ function deleteBox() {
 }
 
 function deleteBoxByLayer(index) {
-    if(layer==0)return;
 
-
-
-
-
-
-    if(layer==1 ){
-        while(boxL1.length){
-            scene.remove(boxL1[boxL1.length-1])
+    if (layer == 0) {
+        while (boxL1.length) {
+            scene.remove(boxL1[boxL1.length - 1])
             boxL1.pop();
         }
-        layer=0;
+
     }
-    if(layer==2 ){
-        while(boxL2.length){
-            scene.remove(boxL2[boxL2.length-1])
+    if (layer == 1) {
+        while (boxL2.length) {
+            scene.remove(boxL2[boxL2.length - 1])
             boxL2.pop();
         }
-        layer=1;
+        layer = 0;
     }
-    if(layer==3 ){
-        while(boxL3.length){
-            scene.remove(boxL3[boxL3.length-1])
+    if (layer == 2) {
+        while (boxL3.length) {
+            scene.remove(boxL3[boxL3.length - 1])
             boxL3.pop();
         }
-        layer=2;
+        layer = 1;
     }
-    if(layer==4 ){
-        while(boxL4.length){
-            scene.remove(boxL4[boxL4.length-1])
+    if (layer == 3 || layer == 4) {
+        while (boxL4.length) {
+            scene.remove(boxL4[boxL4.length - 1])
             boxL4.pop();
         }
-        layer=3;
+        layer = 2;
+        vm.showAddLayerBtn = false;
+    }
+
+    if (selectionBoxEdage) {
+        dragObjects.remove(selectionBoxEdage.userData["target"]);
+
+        scene.remove(selectionBoxEdage.userData["target"]);
+        scene.remove(selectionBoxEdage);
+        selectionBoxEdage = null;
     }
     // if (selectionBoxEdage) {
     //     var arr = dragObjects;
@@ -719,37 +743,44 @@ function deleteBoxByLayer(index) {
     // }
     render();
 }
+
 //加载六个面的纹理贴图
 var texture1 = THREE.ImageUtils.loadTexture("assets/box/1.png");
-var texture2= THREE.ImageUtils.loadTexture("assets/box/2.png");
+var texture2 = THREE.ImageUtils.loadTexture("assets/box/2.png");
 var texture3 = THREE.ImageUtils.loadTexture("assets/box/3.png");
-var texture4= THREE.ImageUtils.loadTexture("assets/box/4.png");
+var texture4 = THREE.ImageUtils.loadTexture("assets/box/4.png");
 var texture5 = THREE.ImageUtils.loadTexture("assets/box/5.png");
 // var texture6 = THREE.ImageUtils.loadTexture("assets/box/6.png");
 
 var texture3_1 = THREE.ImageUtils.loadTexture("assets/box/3_1.png");
-var materialArr=[
+var materialArr = [
     //纹理对象赋值给6个材质对象
-    new THREE.MeshPhongMaterial({map:texture1}),
-    new THREE.MeshPhongMaterial({map:texture2}),
-    new THREE.MeshPhongMaterial({map:texture3}),
-    new THREE.MeshPhongMaterial({map:texture4}),
-    new THREE.MeshPhongMaterial({map:texture5}),
-    new THREE.MeshPhongMaterial({map:texture4})
+    new THREE.MeshPhongMaterial({map: texture1}),
+    new THREE.MeshPhongMaterial({map: texture2}),
+    new THREE.MeshPhongMaterial({map: texture3}),
+    new THREE.MeshPhongMaterial({map: texture4}),
+    new THREE.MeshPhongMaterial({map: texture5}),
+    new THREE.MeshPhongMaterial({map: texture4})
 ];
 //http://www.yanhuangxueyuan.com/Three.js_course/texture.html
 //6个材质对象组成的数组赋值给MeshFaceMaterial构造函数
-var facematerial=new THREE.MeshFaceMaterial(materialArr);
+var facematerial = new THREE.MeshFaceMaterial(materialArr);
 
-var materialArr2=[
+var materialArr2 = [
     //纹理对象赋值给6个材质对象
-    new THREE.MeshPhongMaterial({map:texture1}),
-    new THREE.MeshPhongMaterial({map:texture2}),
-    new THREE.MeshPhongMaterial({map:texture3_1}),
-    new THREE.MeshPhongMaterial({map:texture4}),
-    new THREE.MeshPhongMaterial({map:texture5}),
-    new THREE.MeshPhongMaterial({map:texture4})
+    new THREE.MeshPhongMaterial({map: texture1}),
+    new THREE.MeshPhongMaterial({map: texture2}),
+    new THREE.MeshPhongMaterial({map: texture3_1}),
+    new THREE.MeshPhongMaterial({map: texture4}),
+    new THREE.MeshPhongMaterial({map: texture5}),
+    new THREE.MeshPhongMaterial({map: texture4})
 ];
 var facematerial2 = new THREE.MeshFaceMaterial(materialArr2);
 
-var mapMeshs=[];
+var mapMeshs = [];
+Array.prototype.remove = function (val) {
+    var index = this.indexOf(val);
+    if (index > -1) {
+        this.splice(index, 1);
+    }
+};

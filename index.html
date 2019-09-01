@@ -110,7 +110,7 @@
                 <div style="margin-bottom: 10px">货品名称:<span style="margin-left: 10px">{{levelData[level].name}}</span></div>
                 <div style="margin-bottom: 10px">纸箱尺寸:<span style="margin-left: 10px">{{levelData[level].size}}</span></div>
                 <div style="margin-bottom: 10px">纸箱个数:<span style="margin-left: 10px">{{levelData[level].num}}</span></div>
-                <div style="margin-bottom: 10px">托盘尺寸:<span style="margin-left: 10px">1200*1000mm</span></div>
+                <div style="margin-bottom: 10px">托盘尺寸:<span style="margin-left: 10px">1200×1000×160(mm)</span></div>
                 <div style="margin-bottom: 20px">剩余时间:<span style="margin-left: 10px">{{countTime}}</span></div>
                 <!--<Divider>图纸</Divider>-->
                 <!--<Radio-group v-model="startType" type="button" style="margin-left: 15px;margin-bottom: 10px">-->
@@ -188,11 +188,11 @@
 
                 },
                 deleteBoxByLayer:function(){
-                    if(selectionBoxEdage){
+//                    if(selectionBoxEdage){
                         deleteBoxByLayer();
-                    }else {
-                        this.$Message.info('请先选择要删除层任意一个箱子');
-                    }
+//                    }else {
+//                        this.$Message.info('请先选择要删除层任意一个箱子');
+//                    }
                 },
                 show: function () {
                     this.visible = true;
