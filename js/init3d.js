@@ -760,7 +760,7 @@ var materialArr = [
     new THREE.MeshPhongMaterial({map: texture3}),
     new THREE.MeshPhongMaterial({map: texture4}),
     new THREE.MeshPhongMaterial({map: texture5}),
-    new THREE.MeshPhongMaterial({map: texture4})
+    new THREE.MeshPhongMaterial({map: texture5})
 ];
 //http://www.yanhuangxueyuan.com/Three.js_course/texture.html
 //6个材质对象组成的数组赋值给MeshFaceMaterial构造函数
@@ -773,7 +773,7 @@ var materialArr2 = [
     new THREE.MeshPhongMaterial({map: texture3_1}),
     new THREE.MeshPhongMaterial({map: texture4}),
     new THREE.MeshPhongMaterial({map: texture5}),
-    new THREE.MeshPhongMaterial({map: texture4})
+    new THREE.MeshPhongMaterial({map: texture5})
 ];
 var facematerial2 = new THREE.MeshFaceMaterial(materialArr2);
 
