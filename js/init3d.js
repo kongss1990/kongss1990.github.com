@@ -72,6 +72,7 @@ function hitTest() {
                 dragObjects[ii].material = facematerial
                 // dragObjects[ii].material = new THREE.MeshLambertMaterial({map: texture,transparent:true,opacity:0.6});
             }
+            dragObjects[ii].isOk = false;
 
 
         }
@@ -88,7 +89,8 @@ function hitTest() {
                         isOk = true;
 
                         // dragObjects[j].material=new THREE.MeshLambertMaterial({map: texture});
-                        dragObjects[j].material = facematerial2
+                        dragObjects[j].material = facematerial2;
+                        dragObjects[j].isOk = true;
                         // vm.tipMessage = '提示：正确位置！';
                         // if(dragObjects[j].position.y<dragObjects[j].geometry.parameters.depth){
                         //     if(boxL1.indexOf(dragObjects[j])==-1)boxL1.push(dragObjects[j]);
@@ -633,13 +635,33 @@ function addLayer() {
             boxL4.push(mesh);
         }
     }
+    if (selectionBoxEdage) {
+        dragObjects.remove(selectionBoxEdage.userData["target"]);
+
+        scene.remove(selectionBoxEdage.userData["target"]);
+        scene.remove(selectionBoxEdage);
+        selectionBoxEdage = null;
+    }
     render();
 }
 
 function addBox(e) {
-    if (layer == 4 || dragObjects.length == levelData[vm.level].num) {
+    if (layer == 4) {
         vm.$Message.error('超出范围');
         return;
+    }
+
+    if(dragObjects.length == levelData[vm.level].num){
+        var num=0;
+        for(var g=0;g<dragObjects.length;g++){
+            if(dragObjects[g].isOk)num++
+        }
+        if(num<dragObjects.length){
+            vm.$Message.error('超出范围');
+            return;
+        }else{
+            layer++;
+        }
     }
 
     var geometry = new THREE.BoxBufferGeometry(33, 24.5, 24);
@@ -647,6 +669,7 @@ function addBox(e) {
     // var mesh = new THREE.Mesh(geometry, material);
 
     var mesh = new THREE.Mesh(geometry, facematerial);
+    mesh.name=false;
     var h = Number(levelData[vm.level].size.split('×')[2]) * .1 * .5;
     mesh.position.y = h + layer * 2 * h;
 
@@ -697,32 +720,44 @@ function deleteBoxByLayer(index) {
 
     if (layer == 0) {
         while (boxL1.length) {
-            scene.remove(boxL1[boxL1.length - 1])
+            scene.remove(boxL1[boxL1.length - 1]);
             boxL1.pop();
         }
 
     }
     if (layer == 1) {
         while (boxL2.length) {
-            scene.remove(boxL2[boxL2.length - 1])
+            scene.remove(boxL2[boxL2.length - 1]);
             boxL2.pop();
         }
         layer = 0;
+        vm.showAddLayerBtn = false;
+        dragObjects=[];
+        for(var a=0;a<boxL1.length;a++){
+            dragObjects.push(boxL1[a]);
+        }
     }
     if (layer == 2) {
         while (boxL3.length) {
-            scene.remove(boxL3[boxL3.length - 1])
+            scene.remove(boxL3[boxL3.length - 1]);
             boxL3.pop();
         }
         layer = 1;
+        dragObjects=[];
+        for(var b=0;b<boxL2.length;b++){
+            dragObjects.push(boxL2[b]);
+        }
     }
     if (layer == 3 || layer == 4) {
         while (boxL4.length) {
-            scene.remove(boxL4[boxL4.length - 1])
+            scene.remove(boxL4[boxL4.length - 1]);
             boxL4.pop();
         }
         layer = 2;
-        vm.showAddLayerBtn = false;
+        dragObjects=[];
+        for(var c=0;c<boxL3.length;c++){
+            dragObjects.push(boxL3[c]);
+        }
     }
 
     if (selectionBoxEdage) {

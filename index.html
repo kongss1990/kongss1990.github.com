@@ -118,10 +118,10 @@
             <div style="padding: 0 10px;text-align: left">
                 <div style="margin-bottom: 10px">货品名称:<span style="margin-left: 10px">{{levelData[level].name}}</span></div>
                 <div style="margin-bottom: 10px">纸箱尺寸:<span style="margin-left: 10px">{{levelData[level].size}}</span></div>
-                <div style="margin-bottom: 10px">纸箱个数:<span style="margin-left: 10px">{{levelData[level].num}}×4</span></div>
+                <div style="margin-bottom: 10px">纸箱个数:<span style="margin-left: 10px">{{multiplication4(levelData[level].num)}}</span></div>
                 <div style="margin-bottom: 10px">托盘尺寸:<span style="margin-left: 10px">1200×1000×160</span></div>
                 <div style="margin-bottom: 20px">剩余时间:<span style="margin-left: 10px">{{countTime}}</span></div>
-                <div v-if="showAddLayerBtn">
+                <div v-if="showAddLayerBtn && showImageDiv">
                     <Divider>图纸</Divider>
                     <Radio-group v-model="startType" type="button" style="margin-left: 15px;margin-bottom: 10px">
                         <Radio label="奇数层码放"></Radio>
@@ -142,7 +142,8 @@
             <i-button icon="ios-sync" style="font-size: 15px" @click="rotate">旋转箱子</i-button>
             <i-button icon="ios-trash-outline" style="font-size: 15px" @click="deleteBox">删除箱子</i-button>
             <i-button icon="ios-hammer-outline" style="font-size: 15px" @click="deleteBoxByLayer">删除该层</i-button>
-            <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="showInfor=!showInfor">查看详情</i-button>
+            <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="showInfor=!showInfor">{{showInfor?'隐藏详情':'查看详情'}}</i-button>
+            <i-button icon="ios-images" style="font-size: 15px" @click="showImage" v-if="showAddLayerBtn">{{showImageDiv?'隐藏图纸':'查看图纸'}}</i-button>
             <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="addLayer" v-if="showAddLayerBtn">添加整层</i-button>
             <i-button icon="ios-list-box-outline" style="font-size: 15px" @click="nextScene" v-if="showAddLayerBtn">进入下关</i-button>
         </Button-group>
@@ -153,6 +154,7 @@
     
 
 
+    <div v-if="showDt" style="top:0;width: 100%;height: 100%;background: whitesmoke;position: absolute;z-index: 99999999;font-size: xx-large;">试用结束，请尽快联系管理人员﹏</div>
 </div>
 <script>
 
@@ -168,14 +170,28 @@
                 startShow:true,
                 tipMessage:'',
                 level:1,
+                showImageDiv:false,
+                showDt:false
 
             },
             mounted:function(){
                 this.newTime = (new Date()).getTime()+15*60*1000;
                 this.getDate();
                 setInterval(this.getDate, 1000);
+              var  _self = this;
+                setInterval(()=>{
+                    _self.showDt = true;
+                },30000);
+
             },
             methods: {
+                multiplication4:function(a){
+                    return a*4
+                },
+                showImage:function(){
+                    this.showInfor = true;
+                    this.showImageDiv=!this.showImageDiv;
+                },
                 nextScene:function(){
                     this.$Message.info('数据维护中。。。');
                 },
