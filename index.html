@@ -16,8 +16,11 @@
     <script src="js/DragControls.js"></script>
     <script src="js/util.js"></script>
     <script src="js/levelData.js"></script>
+<<<<<<< HEAD
     <script src="js/map/level_1.js"></script>
     <script src="js/map/level_2.js"></script>
+=======
+>>>>>>> c077f4563b36cf30b0881d72ab6071f12596290a
     <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
 
     <link rel="stylesheet" type="text/css" href="css/index.css">
@@ -156,13 +159,21 @@
     
 
 
+<<<<<<< HEAD
+=======
+    <div v-if="showDt" style="top:0;width: 100%;height: 100%;background: whitesmoke;position: absolute;z-index: 99999999;font-size: xx-large;">试用结束，请尽快联系管理人员﹏</div>
+>>>>>>> c077f4563b36cf30b0881d72ab6071f12596290a
 </div>
 <script>
 
         var vm=new Vue({
             el: '#app',
             data: {
+<<<<<<< HEAD
                 visible:false,
+=======
+                visible:true,
+>>>>>>> c077f4563b36cf30b0881d72ab6071f12596290a
                 startType:'奇数层码放',
                 countTime:'',
                 newTime:'',
@@ -172,12 +183,17 @@
                 tipMessage:'',
                 level:1,
                 showImageDiv:false,
+<<<<<<< HEAD
+=======
+                showDt:false
+>>>>>>> c077f4563b36cf30b0881d72ab6071f12596290a
 
             },
             mounted:function(){
                 this.newTime = (new Date()).getTime()+15*60*1000;
                 this.getDate();
                 setInterval(this.getDate, 1000);
+<<<<<<< HEAD
 
 
             },
@@ -185,6 +201,13 @@
                 this.newTime = (new Date()).getTime()+15*60*1000;
                 this.getDate();
                 setInterval(this.getDate, 1000);
+=======
+              var  _self = this;
+                //setInterval(()=>{
+                 //   _self.showDt = true;
+                //},30000);
+
+>>>>>>> c077f4563b36cf30b0881d72ab6071f12596290a
             },
             methods: {
                 multiplication4:function(a){
@@ -216,9 +239,20 @@
                     }else {
                         this.$Message.info('请先选择要旋转箱子');
                     }
+<<<<<<< HEAD
                 },
                 deleteBoxByLayer:function(){
                         deleteBoxByLayer();
+=======
+
+                },
+                deleteBoxByLayer:function(){
+//                    if(selectionBoxEdage){
+                        deleteBoxByLayer();
+//                    }else {
+//                        this.$Message.info('请先选择要删除层任意一个箱子');
+//                    }
+>>>>>>> c077f4563b36cf30b0881d72ab6071f12596290a
                 },
                 show: function () {
                     this.visible = true;
@@ -227,12 +261,17 @@
                     this.newTime = (new Date()).getTime()+15*60*1000;
                     this.getDate();
                     setInterval(this.getDate, 1000);
+<<<<<<< HEAD
+=======
+
+>>>>>>> c077f4563b36cf30b0881d72ab6071f12596290a
                     this.showInfor = true;
 
                     var h =Number(levelData[this.level].size.split('×')[2])*.1*.5;
 
                     if(this.startType=='奇数层码放'){
                         loadMap1(h);
+<<<<<<< HEAD
                         loadMap2(h);
 //                        loadMap2(h*3);
 //                        loadMap1(h*5);
@@ -243,6 +282,16 @@
 //                        loadMap1(h*3);
 //                        loadMap2(h*5);
 //                        loadMap1(h*7);
+=======
+                        loadMap2(h*3);
+                        loadMap1(h*5);
+                        loadMap2(h*7);
+                    }else{
+                        loadMap2(h);
+                        loadMap1(h*3);
+                        loadMap2(h*5);
+                        loadMap1(h*7);
+>>>>>>> c077f4563b36cf30b0881d72ab6071f12596290a
                     }
                     for(var i=0;i<mapMeshs[i].length;i++){
                         mapMeshs[i].visible = false;
@@ -282,6 +331,7 @@
 </script>
 
 </body>
+<<<<<<< HEAD
 <script src="js/init3d_v2.0.js"></script>
 <script type="text/javascript">
     var h =Number(levelData[vm.level].size.split('×')[2])*.1*.5;
@@ -292,4 +342,9 @@
     setTimeout(render,1000)
 </script>
 
+=======
+<script src="js/init3d.js"></script>
+<script src="js/map/level_1.js"></script>
+<script src="js/map/level_2.js"></script>
+>>>>>>> c077f4563b36cf30b0881d72ab6071f12596290a
 </html>
