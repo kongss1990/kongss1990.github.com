@@ -16,7 +16,7 @@ function loadMap1(v){
         mesh.position.z = i*g1-50+0.5*g1;
         mesh.position.x = -60+0.5*w1;
         mesh.position.y = gd;
-        scene.add( mesh );
+        scene.add( mesh );mesh.state=1;
         mapMeshs.push(mesh);
     }
 
@@ -26,7 +26,7 @@ function loadMap1(v){
         mesh.position.z = i*g1-50+0.5*g1;
         mesh.position.x = -60+w1+0.5*w1;
         mesh.position.y = gd;
-        scene.add( mesh );
+        scene.add( mesh );mesh.state=1;
         mapMeshs.push(mesh);
     }
 
@@ -36,7 +36,7 @@ function loadMap1(v){
         mesh.position.z = i*g2-50+0.5*g2;
         mesh.position.x = -60+w1*2+0.5*w2;
         mesh.position.y = gd;
-        scene.add( mesh );
+        scene.add( mesh );mesh.state=1;
         mapMeshs.push(mesh);
     }
     for(var i=0;i<3;i++){
@@ -45,12 +45,12 @@ function loadMap1(v){
         mesh.position.z = i*g2-50+0.5*g2;
         mesh.position.x = -60+w1*2+0.5*w2+w2;
         mesh.position.y = gd;
-        scene.add( mesh );
+        scene.add( mesh );mesh.state=1;
         mapMeshs.push(mesh);
     }
 
 }
-// setTimeout(loadMap,1000);
+
 
 function hitTest1(){
     for(var i=0;i<blocks.length;i++){
