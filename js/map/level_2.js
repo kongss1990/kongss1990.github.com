@@ -1,4 +1,4 @@
-function loadMap2(v){
+function loadMap1_2(v){
     // var gd = 12+24;
     var gd = v;
     var w1=33;

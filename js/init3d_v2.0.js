@@ -27,6 +27,7 @@ function render() {
     }
 
     hitTest();
+    if(textureCanvas)textureCanvas.needsUpdate = true;
 }
 //显示物体边框
 function setEdg(obj) {
@@ -247,7 +248,7 @@ function init() {
     // scene.add(axes);
 
 
-    orbit.enabled = false;
+    // orbit.enabled = false;
     orbit.addEventListener('start', function () {
 
     });
@@ -282,13 +283,19 @@ function init() {
 
                 }
                 if(firstLayerStatus){
-                    loadMap2(h*3);
-                    loadMap1(h*5);
-                    loadMap2(h*7);
+                    // loadMap2(h*3);
+                    // loadMap1(h*5);
+                    // loadMap2(h*7);
+                    window['loadMap'+vm.level+'_2'](h*3);
+                    window['loadMap'+vm.level+'_1'](h*5);
+                    window['loadMap'+vm.level+'_2'](h*7);
                 }else{
-                    loadMap1(h*3);
-                    loadMap2(h*5);
-                    loadMap1(h*7);
+                    // loadMap1(h*3);
+                    // loadMap2(h*5);
+                    // loadMap1(h*7);
+                    window['loadMap'+vm.level+'_1'](h*3);
+                    window['loadMap'+vm.level+'_2'](h*5);
+                    window['loadMap'+vm.level+'_1'](h*7);
                 }
             }
 
@@ -637,8 +644,12 @@ function addBox(e) {
             layer++;
         }
     }
-
-    var geometry = new THREE.BoxBufferGeometry(33, 24.5, 24);
+    var w = Number(levelData[vm.level].size.split('×')[0])*.1;
+    var d = Number(levelData[vm.level].size.split('×')[1])*.1;
+    var hh = Number(levelData[vm.level].size.split('×')[2])*.1;
+    console.log(w,d,hh);
+    var geometry = new THREE.BoxBufferGeometry(w, hh, d);
+    // var geometry = new THREE.BoxBufferGeometry(33, 24.5, 24);
     var mesh = new THREE.Mesh(geometry, facematerial);
     mesh.name=false;
     var h = Number(levelData[vm.level].size.split('×')[2]) * .1 * .5;
@@ -767,6 +778,30 @@ var texture3_1 = THREE.ImageUtils.loadTexture("assets/box/3_1.png");
 var texture3_2 = THREE.ImageUtils.loadTexture("assets/box/3_2.png");
 
 
+function createCanvas(w,h) {
+    w = w || 30;
+    h = h || 30
+    var cs = document.createElement('canvas')
+    var ctx = cs.getContext('2d');
+    cs.width = w;
+    cs.height = h;
+    ctx.fillStyle = "#B0926E";
+
+    ctx.fillRect(0, 0, w, h);
+    ctx.font="20px Arial";
+    ctx.fillStyle = "#000";
+    ctx.fontWeight = 'bold';
+    ctx.fillText("内蒙古交通职业技术学院",10,40);
+    ctx.fillText(levelData[vm.level].name,10,120);
+    ctx.fillText(levelData[vm.level].size+'mm',10,180);
+    ctx.fillRect(0,200, w, 10);
+
+    ctx.fillRect(0,226, w, 30);
+    return cs;
+}
+var textureCanvas = new THREE.Texture(createCanvas(256,256));
+var materialCanvas = new THREE.MeshBasicMaterial({ map: textureCanvas});
+
 //6个材质对象组成的数组赋值给MeshFaceMaterial构造函数
 var facematerial = new THREE.MeshFaceMaterial(
     [
@@ -775,10 +810,13 @@ var facematerial = new THREE.MeshFaceMaterial(
         new THREE.MeshPhongMaterial({map: texture2}),
         new THREE.MeshPhongMaterial({map: texture3}),
         new THREE.MeshPhongMaterial({map: texture4}),
-        new THREE.MeshPhongMaterial({map: texture5}),
-        new THREE.MeshPhongMaterial({map: texture5})
+        // new THREE.MeshPhongMaterial({map: texture5}),
+        // new THREE.MeshPhongMaterial({map: texture5})
+        materialCanvas,
+        materialCanvas
     ]
 );
+
 
 
 var facematerialOk1 = new THREE.MeshFaceMaterial(
@@ -788,8 +826,8 @@ var facematerialOk1 = new THREE.MeshFaceMaterial(
         new THREE.MeshPhongMaterial({map: texture2}),
         new THREE.MeshPhongMaterial({map: texture3_1}),
         new THREE.MeshPhongMaterial({map: texture4}),
-        new THREE.MeshPhongMaterial({map: texture5}),
-        new THREE.MeshPhongMaterial({map: texture5})
+        materialCanvas,
+        materialCanvas
     ]
 );
 var facematerialOk2 = new THREE.MeshFaceMaterial(
@@ -801,12 +839,18 @@ var facematerialOk2 = new THREE.MeshFaceMaterial(
         new THREE.MeshPhongMaterial({map: texture4}),
         new THREE.MeshPhongMaterial({map: texture5}),
         new THREE.MeshPhongMaterial({map: texture5})
+
     ]
 );
 
 
 
 
+
+// var texture = new THREE.Texture(createCanvas(130,130))
+// var material = new THREE.MeshBasicMaterial({
+//     map: texture
+// })
 Array.prototype.remove = function (val) {
     var index = this.indexOf(val);
     if (index > -1) {

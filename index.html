@@ -9,6 +9,9 @@
     <script type="text/javascript" src="js/iview.min.js"></script>
 
 
+
+
+
     <script src='js/three.min.js'></script>
     <script src='js/OrbitControls.js'></script>
     <script src='js/Detector.js'></script>
@@ -71,6 +74,57 @@
         /*button*/
 
     </style>
+
+    <script src="js/map/level2_1.js"></script>
+    <script src="js/map/level2_2.js"></script>
+    <script src="js/map/level3_1.js"></script>
+    <script src="js/map/level3_2.js"></script>
+    <script src="js/map/level4_1.js"></script>
+    <script src="js/map/level4_2.js"></script>
+    <script src="js/map/level5_1.js"></script>
+    <script src="js/map/level5_2.js"></script>
+    <script src="js/map/level6_1.js"></script>
+    <script src="js/map/level6_2.js"></script>
+    <script src="js/map/level7_1.js"></script>
+    <script src="js/map/level7_2.js"></script>
+    <script src="js/map/level8_1.js"></script>
+    <script src="js/map/level8_2.js"></script>
+    <script src="js/map/level9_1.js"></script>
+    <script src="js/map/level9_2.js"></script>
+    <script src="js/map/level10_1.js"></script>
+    <script src="js/map/level10_2.js"></script>
+    <script src="js/map/level11_1.js"></script>
+    <script src="js/map/level11_2.js"></script>
+    <script src="js/map/level12_1.js"></script>
+    <script src="js/map/level12_2.js"></script>
+    <script src="js/map/level13_1.js"></script>
+    <script src="js/map/level13_2.js"></script>
+    <script src="js/map/level14_1.js"></script>
+    <script src="js/map/level14_2.js"></script>
+    <script src="js/map/level15_1.js"></script>
+    <script src="js/map/level15_2.js"></script>
+    <script src="js/map/level16_1.js"></script>
+    <script src="js/map/level16_2.js"></script>
+
+    <script src="js/map/level17_1.js"></script>
+    <script src="js/map/level17_2.js"></script>
+    <script src="js/map/level18_1.js"></script>
+    <script src="js/map/level18_2.js"></script>
+    <script src="js/map/level19_1.js"></script>
+    <script src="js/map/level19_2.js"></script>
+    <script src="js/map/level20_1.js"></script>
+    <script src="js/map/level20_2.js"></script>
+    <script type="text/javascript">
+        function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+        var level = 1;
+        if(GetQueryString('level'))level = GetQueryString('level');
+
+    </script>
 </head>
 <body>
 
@@ -125,14 +179,16 @@
                 <div style="margin-bottom: 10px">纸箱个数:<span style="margin-left: 10px">{{multiplication4(levelData[level].num)}}</span></div>
                 <div style="margin-bottom: 10px">托盘尺寸:<span style="margin-left: 10px">1200×1000×160</span></div>
                 <div style="margin-bottom: 20px">剩余时间:<span style="margin-left: 10px">{{countTime}}</span></div>
+
                 <div v-if="showAddLayerBtn && showImageDiv">
                     <Divider>图纸</Divider>
                     <Radio-group v-model="startType" type="button" style="margin-left: 15px;margin-bottom: 10px">
                         <Radio label="奇数层码放"></Radio>
                         <Radio label="偶数层码放"></Radio>
                     </Radio-group>
-                    <img style="width: 100%" v-if="startType=='奇数层码放'"src="assets/1-1.png">
-                    <img style="width: 100%" v-if="startType=='偶数层码放'"src="assets/1-2.png">
+                    <img style="width: 100%" v-if="startType=='奇数层码放'" :src=`assets/map/${level}-1.jpg`>
+
+                    <img style="width: 100%" v-if="startType=='偶数层码放'" :src=`assets/map/${level}-2.jpg`>
                 </div>
 
             </div>
@@ -175,15 +231,21 @@
                 showAddLayerBtn:false,
                 startShow:true,
                 tipMessage:'',
-                level:1,
-                showImageDiv:false,
-
-
+                level:19,
+                showImageDiv:false
             },
             mounted:function(){
+
+                this.level = level;
+                if(level==1){
+                    this.startShow = true;
+                }else{
+                    this.startShow = false;
+                }
                 this.newTime = (new Date()).getTime()+15*60*1000;
                 this.getDate();
                 setInterval(this.getDate, 1000);
+
 
             },
             created:function(){
@@ -201,6 +263,7 @@
                 },
                 nextScene:function(){
                     this.$Message.info('数据维护中。。。');
+                    window.location.href = window.location.origin+window.location.pathname+'?level='+(Number(level)+1);
                 },
                 addLayer:function(){
                     addLayer();
@@ -240,16 +303,14 @@
                     var h =Number(levelData[this.level].size.split('×')[2])*.1*.5;
 
                     if(this.startType=='奇数层码放'){
-                        loadMap1(h);
-
-                        loadMap2(h);
-
-
+//                        loadMap1(h);
+//                        loadMap2(h);
                     }else{
-                        loadMap1(h);
-                        loadMap2(h);
+//                        loadMap1(h);
+//                        loadMap2(h);
 
-
+                        window['loadMap'+this.level+'_1']();
+                        window['loadMap'+this.level+'_2']();
                     }
                     for(var i=0;i<mapMeshs[i].length;i++){
                         mapMeshs[i].visible = false;
@@ -295,11 +356,23 @@
 <script src="js/init3d_v2.0.js"></script>
 <script type="text/javascript">
     var h =Number(levelData[vm.level].size.split('×')[2])*.1*.5;
-    loadMap1(h);
-    loadMap2(h);
+//    loadMap1(h);
+//    loadMap2(h);
+
+    window['loadMap'+vm.level+'_1']();
+    window['loadMap'+vm.level+'_2']();
     addBox();
     render();
     setTimeout(render,1000)
+
+//    if(level!=3){
+//        setTimeout(function(){
+//            window.location.href = 'http://localhost:8090/moveBox3d/kongss1990.github.com/index.html?level=19'
+//
+//            window.location.href = window.location.origin+window.location.pathname+'?level='+(Number(level)+1);
+//        },1000)
+//    }
+
 </script>
 
 </html>
