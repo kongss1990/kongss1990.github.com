@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+<head>
+    <title>DT-Earth</title>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+    <style>
+        body {
+            margin: 0px;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+
+        #viewport {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            /*background: #1b1c1e;*/
+            /*background-image: linear-gradient(#7d8fa3, #1b1c1e);*/
+        }
+
+    </style>
+    <script src='three.js'></script>
+    <script src='OrbitControls.js'></script>
+    <script src="TransformControls.js"></script>
+    <script src="DragControls.js"></script>
+    <script src='Detector.js'></script>
+    <script src='stats.min.js'></script>
+    <script src="dat.gui.min.js"></script>
+    <script src="GUI.js"></script>
+    <script src="SceneUtils.js"></script>
+    <script src="ThreeCSG.js"></script>
+
+    <script src="jquery-1.11.2.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <link  rel="stylesheet" href="bootstrap.min.css">
+    <script  src="tween.min.js"></script>
+    <link  rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div id='viewport'></div>
+
+<div style="position: absolute;top: 20px;left: 20px;">
+    <div class="list-group">
+        <a href="#" class="list-group-item">测点1</a>
+        <a href="#" class="list-group-item">测点2</a>
+        <a href="#" class="list-group-item">测点3</a>
+        <a href="#" class="list-group-item">测点4</a>
+        <a href="#" class="list-group-item">测点5</a>
+    </div>
+</div>
+
+<div style="position: absolute;top:calc(50% - 30px);left:calc(50% - 30px);display: none" id="tipDiv">
+    <div class="col-sm-2">
+        <div class="sp sp-wave"></div>
+    </div>
+
+</div>
+
+<div id="imgCon" style="position: absolute;top:calc(50% - 30px);left:calc(50% + 10px);display: none">
+    <img  src="tip.png" >
+    <div id="imgText" style="position: relative;
+    top: -36px;
+    left: 100px;
+    color: red;
+    font-size: medium;"></div>
+</div>
+
+<script>
+
+    if (!Detector.webgl) Detector.addGetWebGLMessage();
+
+    var container, scene, camera, renderer, stats;
+    var dragObjects = [];
+
+
+
+    function onWindowResize() {
+
+        camera.aspect = container.offsetWidth / container.offsetHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        render();
+
+    }
+
+    var orbit
+    function init() {
+
+        container = document.getElementById('viewport');
+
+        renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+        renderer.setClearColor(0x000000, 0);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+        renderer.shadowMap.enabled = true;
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff);
+        scene.add(new THREE.GridHelper(20, 8));
+
+
+        //为width/height,通常设置为canvas元素的高宽比。
+        var aspect = window.innerWidth / window.innerHeight;
+
+        camera = new THREE.PerspectiveCamera(70, aspect, 1, 10000);
+        camera.position.set(0, 50, 500);
+        scene.add(camera);
+
+        orbit = new THREE.OrbitControls(camera, container);
+        orbit.addEventListener('change', render);
+
+        var target = new THREE.Vector3(0, 1, 0);
+        camera.lookAt(target);
+        orbit.target = target;
+
+        window.addEventListener('resize', onWindowResize, false);
+
+
+        scene.add(new THREE.AmbientLight(0xf0f0f0));
+        var light = new THREE.SpotLight(0xffffff, 1.5);
+        light.position.set(0, 1500, 200);
+        light.castShadow = true;
+        light.shadow = new THREE.LightShadow(new THREE.PerspectiveCamera(70, 1, 200, 2000));
+        light.shadow.bias = -0.000222;
+        light.shadow.mapSize.width = 1024;
+        light.shadow.mapSize.height = 1024;
+        scene.add(light);
+        spotlight = light;
+
+
+
+        var helper = new THREE.GridHelper(2000, 100);
+        helper.position.y = -1;
+        helper.material.opacity = 0.25;
+        helper.material.transparent = true;
+//        scene.add(helper);
+
+        stats = new Stats();
+//        container.appendChild(stats.dom);
+
+        var axes = new THREE.AxesHelper(1000);
+        axes.position.set(0, 0, 0);
+//        scene.add(axes);
+
+
+        orbit.addEventListener('start', function () {
+
+            cancelHideTransorm();
+
+        });
+
+        orbit.addEventListener('end', function () {
+
+            delayHideTransform();
+
+        });
+
+        transformControl = new THREE.TransformControls(camera, renderer.domElement);
+        transformControl.axis = "XZ";
+        transformControl.addEventListener('change', render);
+        scene.add(transformControl);
+
+        // Hiding transform situation is a little in a mess :()
+        transformControl.addEventListener('change', function (e) {
+            cancelHideTransorm();
+            render();
+        });
+
+        transformControl.addEventListener('mouseDown', function (e) {
+            cancelHideTransorm();
+        });
+
+        transformControl.addEventListener('mouseUp', function (e) {
+            delayHideTransform();
+        });
+
+        transformControl.addEventListener('objectChange', function (e) {
+
+
+        });
+
+        var dragcontrols = new THREE.DragControls(dragObjects, camera, renderer.domElement); //
+        dragcontrols.enabled = false;
+        dragcontrols.addEventListener('hoveron', function (event) {
+            transformControl.attach(event.object);
+            render();
+            cancelHideTransorm();
+
+        });
+
+        dragcontrols.addEventListener('hoveroff', function (event) {
+
+            delayHideTransform();
+
+        });
+
+        var hiding;
+
+        function delayHideTransform() {
+
+            cancelHideTransorm();
+            hideTransform();
+
+        }
+
+        function hideTransform() {
+
+            hiding = setTimeout(function () {
+
+                transformControl.detach(transformControl.object);
+
+            }, 2500)
+
+        }
+
+        function cancelHideTransorm() {
+
+            if (hiding) clearTimeout(hiding);
+
+        }
+
+        render();
+
+    }
+
+
+    init();
+    animate();
+
+
+    // earth
+
+    var earthMesh;
+    var loader = new THREE.TextureLoader();
+    loader.load( 'land_ocean_ice_cloud_2048.jpg', function ( texture ) {
+
+        var geometry = new THREE.SphereGeometry( 200, 20, 20 );
+
+        var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+        var mesh = new THREE.Mesh( geometry, material );
+        scene.add( mesh );
+        earthMesh=mesh;
+    } );
+
+    // shadow
+
+    var canvas = document.createElement( 'canvas' );
+    canvas.width = 128;
+    canvas.height = 128;
+
+    var context = canvas.getContext( '2d' );
+    var gradient = context.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        0,
+        canvas.width / 2,
+        canvas.height / 2,
+        canvas.width / 2
+    );
+    gradient.addColorStop( 0.1, 'rgba(210,210,210,1)' );
+    gradient.addColorStop( 1, 'rgba(255,255,255,1)' );
+
+    context.fillStyle = gradient;
+    context.fillRect( 0, 0, canvas.width, canvas.height );
+
+    var texture = new THREE.CanvasTexture( canvas );
+
+    var segment = 600;
+    var geometry = new THREE.PlaneBufferGeometry( segment, segment, 3, 3 );
+    var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+
+    var mesh = new THREE.Mesh( geometry, material );
+    mesh.position.y = - 250;
+    mesh.rotation.x = - Math.PI / 2;
+    scene.add( mesh );
+    render();
+
+
+    function animate() {
+        TWEEN.update();
+        requestAnimationFrame( animate );
+
+        render();
+        stats.update();
+
+    }
+
+    function render() {
+
+            if (scene !== undefined) {
+                //更新性能插件
+                stats.update();
+                if(earthMesh&&!ishover)earthMesh.rotation.y -= 0.002;
+                renderer.render(scene, camera);
+            }
+    }
+
+    /*dom处理*/
+    $('.list-group-item').mouseenter(function(e){
+//        $(this).css("background", '#bbffaa');
+        ishover = true;
+
+        var s = e.currentTarget.innerHTML;
+        tween = new TWEEN.Tween(earthMesh.rotation).to({y:Math.PI*Math.random(),x:Math.PI*Math.random(),z: Math.PI*Math.random()}, 1000);
+        tween.easing(TWEEN.Easing.Sinusoidal.InOut);
+        tween.onComplete(function(){
+
+            $('#tipDiv').show();
+            setTimeout(()=>{
+                $('#imgCon').show();
+            $('#imgText').html(s);
+            },1000)
+        });
+
+//        tween.onUpdate(function() {
+//            leftPage.rotation.z = this.leftRz;
+//            sidePage.rotation.z = this.sideRz;
+//        });
+        tween.start();
+
+//
+//        camera.lookAt(new THREE.Vector3(0,0,0))
+    });
+    $('.list-group-item').mouseleave(function(){
+//        $(this).css("background", 'red');
+        ishover = false;
+        $('#tipDiv').hide();
+        $('#imgCon').hide();
+    });
+
+    var ishover = false;
+
+
+
+
+
+</script>
+</body>
+</html>
