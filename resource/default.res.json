@@ -1,0 +1,525 @@
+{
+	"groups": [
+		{
+			"keys": "description_json,bg_png,hand_ske_json,hand_tex_json,hand_tex_png,playBtn_png,mask_png,maskRaccoon_png,NewProject_ske_json,NewProject_tex_json,NewProject_tex_png,skipBtn_png,cloud_png,levelBg_png,menu_png,raccoonBack_tex_png,raccoonBack_ske_json,raccoonBack_tex_json,ball_png,socksLeft_png,socksRight_png,raccoonDraw_tex_json,raccoonDraw_tex_png,raccoonDraw_ske_json,socksShadow_png,board_png,clamp_png,paper_png,socksR_png,socksL_png,7_mp3,8_mp3,9_mp3,10_mp3,11_mp3,bg_mp3,paper_mp3,bui_mp3,1_mp3,2_mp3,3_mp3,4_mp3,5_mp3,6_mp3,click_mp3,soundMc_json,soundMc_png,replayBtn_png,raccoonFront_tex_png,raccoonFront_ske_json,raccoonFront_tex_json,demoL0_png,demoLL0_png,demoR0_png,demoRR0_png,shadow0_png,testL0_png,testLL0_png,testR0_png,testRR0_png,demoL1_png,demoLL1_png,demoR1_png,demoRR1_png,shadow02_png,testL1_png,testLL1_png,testR1_png,testRR1_png,demoL2_png,demoLL2_png,demoR2_png,demoRR2_png,shadow2_png,testL2_png,testLL2_png,testR2_png,testRR2_png,demoL3_png,demoLL3_png,demoR3_png,demoRR3_png,shadow3_png,testL3_png,testLL3_png,testR3_png,testRR3_png,bg0_png,bg1_png,bg2_png,bg3_png,levelbg0_png,levelbg1_png,levelbg2_png,levelbg3_png",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"url": "assets/bg.jpg",
+			"type": "image",
+			"name": "bg_jpg"
+		},
+		{
+			"url": "assets/egret_icon.png",
+			"type": "image",
+			"name": "egret_icon_png"
+		},
+		{
+			"url": "config/description.json",
+			"type": "json",
+			"name": "description_json"
+		},
+		{
+			"url": "assets/bag.json",
+			"type": "json",
+			"name": "bag_json"
+		},
+		{
+			"url": "assets/bag.png",
+			"type": "image",
+			"name": "bag_png"
+		},
+		{
+			"url": "assets/bg.png",
+			"type": "image",
+			"name": "bg_png"
+		},
+		{
+			"url": "assets/hand_ske.json",
+			"type": "json",
+			"name": "hand_ske_json"
+		},
+		{
+			"url": "assets/hand_tex.json",
+			"type": "json",
+			"name": "hand_tex_json"
+		},
+		{
+			"url": "assets/hand_tex.png",
+			"type": "image",
+			"name": "hand_tex_png"
+		},
+		{
+			"url": "assets/playBtn.png",
+			"type": "image",
+			"name": "playBtn_png"
+		},
+		{
+			"url": "assets/Robot1.png",
+			"type": "image",
+			"name": "Robot1_png"
+		},
+		{
+			"url": "assets/Robot.json",
+			"type": "json",
+			"name": "Robot_json"
+		},
+		{
+			"url": "assets/Robot1.json",
+			"type": "json",
+			"name": "Robot1_json"
+		},
+		{
+			"url": "assets/mask.png",
+			"type": "image",
+			"name": "mask_png"
+		},
+		{
+			"url": "assets/maskRaccoon.png",
+			"type": "image",
+			"name": "maskRaccoon_png"
+		},
+		{
+			"url": "assets/NewProject_ske.json",
+			"type": "json",
+			"name": "NewProject_ske_json"
+		},
+		{
+			"url": "assets/NewProject_tex.json",
+			"type": "json",
+			"name": "NewProject_tex_json"
+		},
+		{
+			"url": "assets/NewProject_tex.png",
+			"type": "image",
+			"name": "NewProject_tex_png"
+		},
+		{
+			"url": "loading.json",
+			"type": "json",
+			"name": "loading_json"
+		},
+		{
+			"url": "assets/skipBtn.png",
+			"type": "image",
+			"name": "skipBtn_png"
+		},
+		{
+			"url": "assets/cloud.png",
+			"type": "image",
+			"name": "cloud_png"
+		},
+		{
+			"url": "assets/levelBg.png",
+			"type": "image",
+			"name": "levelBg_png"
+		},
+		{
+			"url": "assets/menu.png",
+			"type": "image",
+			"name": "menu_png"
+		},
+		{
+			"url": "assets/raccoonBack_tex.png",
+			"type": "image",
+			"name": "raccoonBack_tex_png"
+		},
+		{
+			"url": "assets/raccoonBack_ske.json",
+			"type": "json",
+			"name": "raccoonBack_ske_json"
+		},
+		{
+			"url": "assets/raccoonBack_tex.json",
+			"type": "json",
+			"name": "raccoonBack_tex_json"
+		},
+		{
+			"url": "assets/ball.png",
+			"type": "image",
+			"name": "ball_png"
+		},
+		{
+			"url": "assets/socksLeft.png",
+			"type": "image",
+			"name": "socksLeft_png"
+		},
+		{
+			"url": "assets/socksRight.png",
+			"type": "image",
+			"name": "socksRight_png"
+		},
+		{
+			"url": "assets/raccoonDraw_tex.json",
+			"type": "json",
+			"name": "raccoonDraw_tex_json"
+		},
+		{
+			"url": "assets/raccoonDraw_tex.png",
+			"type": "image",
+			"name": "raccoonDraw_tex_png"
+		},
+		{
+			"url": "assets/raccoonDraw_ske.json",
+			"type": "json",
+			"name": "raccoonDraw_ske_json"
+		},
+		{
+			"url": "assets/socksShadow.png",
+			"type": "image",
+			"name": "socksShadow_png"
+		},
+		{
+			"url": "assets/board.png",
+			"type": "image",
+			"name": "board_png"
+		},
+		{
+			"url": "assets/clamp.png",
+			"type": "image",
+			"name": "clamp_png"
+		},
+		{
+			"url": "assets/paper.png",
+			"type": "image",
+			"name": "paper_png"
+		},
+		{
+			"url": "assets/socksR.png",
+			"type": "image",
+			"name": "socksR_png"
+		},
+		{
+			"url": "assets/socksL.png",
+			"type": "image",
+			"name": "socksL_png"
+		},
+		{
+			"url": "assets/sound/7.mp3",
+			"type": "sound",
+			"name": "7_mp3"
+		},
+		{
+			"url": "assets/sound/8.mp3",
+			"type": "sound",
+			"name": "8_mp3"
+		},
+		{
+			"url": "assets/sound/9.mp3",
+			"type": "sound",
+			"name": "9_mp3"
+		},
+		{
+			"url": "assets/sound/10.mp3",
+			"type": "sound",
+			"name": "10_mp3"
+		},
+		{
+			"url": "assets/sound/11.mp3",
+			"type": "sound",
+			"name": "11_mp3"
+		},
+		{
+			"url": "assets/sound/Guitalele‘s Hap.mp3",
+			"type": "sound",
+			"name": "bg_mp3"
+		},
+		{
+			"url": "assets/sound/菜单翻页.mp3",
+			"type": "sound",
+			"name": "paper_mp3"
+		},
+		{
+			"url": "assets/sound/小浣熊从屏幕底部出现擀面音效.mp3",
+			"type": "sound",
+			"name": "bui_mp3"
+		},
+		{
+			"url": "assets/sound/1.mp3",
+			"type": "sound",
+			"name": "1_mp3"
+		},
+		{
+			"url": "assets/sound/2.mp3",
+			"type": "sound",
+			"name": "2_mp3"
+		},
+		{
+			"url": "assets/sound/3.mp3",
+			"type": "sound",
+			"name": "3_mp3"
+		},
+		{
+			"url": "assets/sound/4.mp3",
+			"type": "sound",
+			"name": "4_mp3"
+		},
+		{
+			"url": "assets/sound/5.mp3",
+			"type": "sound",
+			"name": "5_mp3"
+		},
+		{
+			"url": "assets/sound/6.mp3",
+			"type": "sound",
+			"name": "6_mp3"
+		},
+		{
+			"url": "assets/sound/click.mp3",
+			"type": "sound",
+			"name": "click_mp3"
+		},
+		{
+			"url": "assets/soundMc.json",
+			"type": "json",
+			"name": "soundMc_json"
+		},
+		{
+			"url": "assets/soundMc.png",
+			"type": "image",
+			"name": "soundMc_png"
+		},
+		{
+			"url": "assets/replayBtn.png",
+			"type": "image",
+			"name": "replayBtn_png"
+		},
+		{
+			"name": "raccoonFront_tex_png",
+			"type": "image",
+			"url": "assets/raccoonFront_tex.png"
+		},
+		{
+			"name": "raccoonFront_ske_json",
+			"type": "json",
+			"url": "assets/raccoonFront_ske.json"
+		},
+		{
+			"name": "raccoonFront_tex_json",
+			"type": "json",
+			"url": "assets/raccoonFront_tex.json"
+		},
+		{
+			"name": "demoL0_png",
+			"type": "image",
+			"url": "assets/level/0/demoL0.png"
+		},
+		{
+			"name": "demoLL0_png",
+			"type": "image",
+			"url": "assets/level/0/demoLL0.png"
+		},
+		{
+			"name": "demoR0_png",
+			"type": "image",
+			"url": "assets/level/0/demoR0.png"
+		},
+		{
+			"name": "demoRR0_png",
+			"type": "image",
+			"url": "assets/level/0/demoRR0.png"
+		},
+		{
+			"name": "shadow0_png",
+			"type": "image",
+			"url": "assets/level/0/shadow0.png"
+		},
+		{
+			"name": "testL0_png",
+			"type": "image",
+			"url": "assets/level/0/testL0.png"
+		},
+		{
+			"name": "testLL0_png",
+			"type": "image",
+			"url": "assets/level/0/testLL0.png"
+		},
+		{
+			"name": "testR0_png",
+			"type": "image",
+			"url": "assets/level/0/testR0.png"
+		},
+		{
+			"name": "testRR0_png",
+			"type": "image",
+			"url": "assets/level/0/testRR0.png"
+		},
+		{
+			"name": "demoL1_png",
+			"type": "image",
+			"url": "assets/level/1/demoL1.png"
+		},
+		{
+			"name": "demoLL1_png",
+			"type": "image",
+			"url": "assets/level/1/demoLL1.png"
+		},
+		{
+			"name": "demoR1_png",
+			"type": "image",
+			"url": "assets/level/1/demoR1.png"
+		},
+		{
+			"name": "demoRR1_png",
+			"type": "image",
+			"url": "assets/level/1/demoRR1.png"
+		},
+		{
+			"name": "shadow02_png",
+			"type": "image",
+			"url": "assets/level/1/shadow0.png"
+		},
+		{
+			"name": "testL1_png",
+			"type": "image",
+			"url": "assets/level/1/testL1.png"
+		},
+		{
+			"name": "testLL1_png",
+			"type": "image",
+			"url": "assets/level/1/testLL1.png"
+		},
+		{
+			"name": "testR1_png",
+			"type": "image",
+			"url": "assets/level/1/testR1.png"
+		},
+		{
+			"name": "testRR1_png",
+			"type": "image",
+			"url": "assets/level/1/testRR1.png"
+		},
+		{
+			"name": "demoL2_png",
+			"type": "image",
+			"url": "assets/level/2/demoL2.png"
+		},
+		{
+			"name": "demoLL2_png",
+			"type": "image",
+			"url": "assets/level/2/demoLL2.png"
+		},
+		{
+			"name": "demoR2_png",
+			"type": "image",
+			"url": "assets/level/2/demoR2.png"
+		},
+		{
+			"name": "demoRR2_png",
+			"type": "image",
+			"url": "assets/level/2/demoRR2.png"
+		},
+		{
+			"name": "shadow2_png",
+			"type": "image",
+			"url": "assets/level/2/shadow2.png"
+		},
+		{
+			"name": "testL2_png",
+			"type": "image",
+			"url": "assets/level/2/testL2.png"
+		},
+		{
+			"name": "testLL2_png",
+			"type": "image",
+			"url": "assets/level/2/testLL2.png"
+		},
+		{
+			"name": "testR2_png",
+			"type": "image",
+			"url": "assets/level/2/testR2.png"
+		},
+		{
+			"name": "testRR2_png",
+			"type": "image",
+			"url": "assets/level/2/testRR2.png"
+		},
+		{
+			"name": "demoL3_png",
+			"type": "image",
+			"url": "assets/level/3/demoL3.png"
+		},
+		{
+			"name": "demoLL3_png",
+			"type": "image",
+			"url": "assets/level/3/demoLL3.png"
+		},
+		{
+			"name": "demoR3_png",
+			"type": "image",
+			"url": "assets/level/3/demoR3.png"
+		},
+		{
+			"name": "demoRR3_png",
+			"type": "image",
+			"url": "assets/level/3/demoRR3.png"
+		},
+		{
+			"name": "shadow3_png",
+			"type": "image",
+			"url": "assets/level/3/shadow3.png"
+		},
+		{
+			"name": "testL3_png",
+			"type": "image",
+			"url": "assets/level/3/testL3.png"
+		},
+		{
+			"name": "testLL3_png",
+			"type": "image",
+			"url": "assets/level/3/testLL3.png"
+		},
+		{
+			"name": "testR3_png",
+			"type": "image",
+			"url": "assets/level/3/testR3.png"
+		},
+		{
+			"name": "testRR3_png",
+			"type": "image",
+			"url": "assets/level/3/testRR3.png"
+		},
+		{
+			"name": "bg0_png",
+			"type": "image",
+			"url": "assets/level/bg0.png"
+		},
+		{
+			"name": "bg1_png",
+			"type": "image",
+			"url": "assets/level/bg1.png"
+		},
+		{
+			"name": "bg2_png",
+			"type": "image",
+			"url": "assets/level/bg2.png"
+		},
+		{
+			"name": "bg3_png",
+			"type": "image",
+			"url": "assets/level/bg3.png"
+		},
+		{
+			"name": "levelbg0_png",
+			"type": "image",
+			"url": "assets/level/levelbg0.png"
+		},
+		{
+			"name": "levelbg1_png",
+			"type": "image",
+			"url": "assets/level/levelbg1.png"
+		},
+		{
+			"name": "levelbg2_png",
+			"type": "image",
+			"url": "assets/level/levelbg2.png"
+		},
+		{
+			"name": "levelbg3_png",
+			"type": "image",
+			"url": "assets/level/levelbg3.png"
+		}
+	]
+}

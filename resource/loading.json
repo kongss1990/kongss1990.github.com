@@ -1,0 +1,25 @@
+{
+	"groups": [
+		{
+			"keys": "proBg_png,loadingMc_json,loadingMc_png",
+			"name": "preloadLoading"
+		}
+	],
+	"resources": [
+		{
+			"name": "proBg_png",
+			"type": "image",
+			"url": "resource/assets/proBg.png"
+		},
+		{
+			"name": "loadingMc_json",
+			"type": "json",
+			"url": "resource/assets/Mc_Loading.json"
+		},
+		{
+			"name": "loadingMc_png",
+			"type": "image",
+			"url": "resource/assets/Mc_Loading.png"
+		}
+	]
+}
