@@ -1,12 +1,12 @@
 {
-    "frameRate": 24,
+    "frameRate": 15,
     "name": "hand",
     "version": "5.5",
     "compatibleVersion": "5.5",
     "armature": [
         {
             "type": "Armature",
-            "frameRate": 36,
+            "frameRate": 15,
             "name": "Armature",
             "aabb": {
                 "x": -64.33,
@@ -637,7 +637,7 @@
             "animation": [
                 {
                     "duration": 35,
-                    "playTimes": 10,
+                    "playTimes": -1,
                     "name": "正常手",
                     "bone": [
                         {
@@ -997,7 +997,7 @@
                 },
                 {
                     "duration": 35,
-                    "playTimes":10,
+                    "playTimes":-1,
                     "name": "旋转手",
                     "bone": [
                         {
